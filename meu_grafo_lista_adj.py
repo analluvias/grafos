@@ -11,14 +11,35 @@ class MeuGrafo(GrafoListaAdjacencia):
         Onde X, Z e W são vértices no grafo que não tem uma aresta entre eles.
         :return: Um objeto do tipo set que contém os pares de vértices não adjacentes
         '''
-        pass # Apague essa instrução e inicie seu código aqui
+
+        arestas_existentes = set()
+
+        vertices_nao_adjacentes = set()
+
+        for a in self.arestas:
+            arestas_existentes.add(f'{str(self.arestas[a].v1)}-{str(self.arestas[a].v2)}')
+
+        for v in self.vertices:
+            for w in self.vertices:
+
+                if (f'{str(v)}-{str(w)}' not in arestas_existentes and f'{str(w)}-{str(v)}'
+                        not in arestas_existentes) and str(v) != str(w):
+
+                    if (f'{str(v)}-{str(w)}' not in vertices_nao_adjacentes and
+                            f'{str(w)}-{str(v)}' not in vertices_nao_adjacentes):
+                        vertices_nao_adjacentes.add(f'{str(v)}-{str(w)}')
+
+        return vertices_nao_adjacentes
 
     def ha_laco(self):
         '''
         Verifica se existe algum laço no grafo.
         :return: Um valor booleano que indica se existe algum laço.
         '''
-        pass
+        for a in self.arestas:
+            if self.arestas[a].v1 == self.arestas[a].v2:
+                return True
+        return False
 
     def grau(self, V=''):
         '''
@@ -27,7 +48,21 @@ class MeuGrafo(GrafoListaAdjacencia):
         :return: Um valor inteiro que indica o grau do vértice
         :raises: VerticeInvalidoError se o vértice não existe no grafo
         '''
-        pass
+
+        grau = 0
+        for vert in self.vertices:
+            if str(vert) == V:
+
+                for a in self.arestas:
+                    if str(self.arestas[a].v1) == str(vert):
+                        grau += 1
+
+                    if str(self.arestas[a].v2) == str(vert):
+                        grau += 1
+
+                return grau
+
+        raise VerticeInvalidoError
 
     def ha_paralelas(self):
         '''

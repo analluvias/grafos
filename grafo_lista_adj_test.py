@@ -235,6 +235,7 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(self.g_p.grau('M'), 2)
         self.assertEqual(self.g_p.grau('T'), 3)
         self.assertEqual(self.g_p.grau('Z'), 1)
+
         with self.assertRaises(VerticeInvalidoError):
             self.assertEqual(self.g_p.grau('G'), 5)
 
