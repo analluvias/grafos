@@ -1,4 +1,8 @@
 import unittest
+
+from bibgrafo.aresta import Aresta
+from bibgrafo.vertice import Vertice
+
 from meu_grafo_matriz_adj_nao_dir import *
 from bibgrafo.grafo_errors import *
 

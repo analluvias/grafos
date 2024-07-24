@@ -210,6 +210,189 @@ class TestGrafo(unittest.TestCase):
             self.g_e_m[3][i] = 1
             self.g_e_m[4][i] = 1
 
+        # grafos warshall
+
+        self.grafo_warshall_1 = MeuGrafo()
+        self.grafo_warshall_1.adiciona_vertice("A")
+        self.grafo_warshall_1.adiciona_vertice("B")
+        self.grafo_warshall_1.adiciona_vertice("C")
+        self.grafo_warshall_1.adiciona_vertice("D")
+        self.grafo_warshall_1.adiciona_aresta('a1', 'A', 'B')
+        self.grafo_warshall_1.adiciona_aresta('a2', 'A', 'C')
+        self.grafo_warshall_1.adiciona_aresta('a3', 'B', 'D')
+        self.grafo_warshall_1.adiciona_aresta('a2', 'C', 'D')
+
+        self.grafo_warshall_2 = MeuGrafo()
+        self.grafo_warshall_2.adiciona_vertice('A')
+        self.grafo_warshall_2.adiciona_vertice('B')
+        self.grafo_warshall_2.adiciona_vertice('C')
+        self.grafo_warshall_2.adiciona_vertice('D')
+        self.grafo_warshall_2.adiciona_aresta('a1', 'A', 'B')
+        self.grafo_warshall_2.adiciona_aresta('a2', 'A', 'C')
+        self.grafo_warshall_2.adiciona_aresta('a3', 'B', 'D')
+        self.grafo_warshall_2.adiciona_aresta('a4', 'C', 'D')
+        self.grafo_warshall_2.adiciona_aresta('a5', 'A', 'D')
+        self.grafo_warshall_2.adiciona_aresta('a6', 'C', 'B')
+
+        self.grafo_warshall_3 = MeuGrafo()
+        self.grafo_warshall_3.adiciona_vertice('A')
+        self.grafo_warshall_3.adiciona_vertice('B')
+        self.grafo_warshall_3.adiciona_vertice('C')
+        self.grafo_warshall_3.adiciona_vertice('D')
+        self.grafo_warshall_3.adiciona_vertice('E')
+        self.grafo_warshall_3.adiciona_vertice('F')
+        self.grafo_warshall_3.adiciona_aresta('a1', 'A', 'B')
+        self.grafo_warshall_3.adiciona_aresta('a2', 'A', 'C')
+        self.grafo_warshall_3.adiciona_aresta('a3', 'C', 'D')
+        self.grafo_warshall_3.adiciona_aresta('a4', 'B', 'D')
+        self.grafo_warshall_3.adiciona_aresta('a5', 'C', 'F')
+        self.grafo_warshall_3.adiciona_aresta('a6', 'D', 'E')
+        self.grafo_warshall_3.adiciona_aresta('a7', 'E', 'F')
+
+        self.grafo_warshall_4 = MeuGrafo()
+        self.grafo_warshall_4.adiciona_vertice("A")
+        self.grafo_warshall_4.adiciona_vertice("B")
+        self.grafo_warshall_4.adiciona_vertice("C")
+        self.grafo_warshall_4.adiciona_vertice("D")
+        self.grafo_warshall_4.adiciona_vertice("E")
+        self.grafo_warshall_4.adiciona_vertice("F")
+        self.grafo_warshall_4.adiciona_aresta('a1', 'A', 'B')
+        self.grafo_warshall_4.adiciona_aresta('a2', 'B', 'C')
+        self.grafo_warshall_4.adiciona_aresta('a3', 'C', 'B')
+        self.grafo_warshall_4.adiciona_aresta('a4', 'B', 'D')
+        self.grafo_warshall_4.adiciona_aresta('a5', 'D', 'C')
+        self.grafo_warshall_4.adiciona_aresta('a6', 'B', 'F')
+        self.grafo_warshall_4.adiciona_aresta('a7', 'B', 'E')
+        self.grafo_warshall_4.adiciona_aresta('a8', 'E', 'F')
+
+        self.grafo_matriz_warshall_1 = self.constroi_matriz(self.grafo_warshall_1)
+        self.grafo_matriz_warshall_1[0][0] = 0
+        self.grafo_matriz_warshall_1[0][1] = 1
+        self.grafo_matriz_warshall_1[0][2] = 1
+        self.grafo_matriz_warshall_1[0][3] = 1
+
+        self.grafo_matriz_warshall_1[1][0] = 0
+        self.grafo_matriz_warshall_1[1][1] = 0
+        self.grafo_matriz_warshall_1[1][2] = 0
+        self.grafo_matriz_warshall_1[1][3] = 1
+
+        self.grafo_matriz_warshall_1[2][0] = 0
+        self.grafo_matriz_warshall_1[2][1] = 0
+        self.grafo_matriz_warshall_1[2][2] = 0
+        self.grafo_matriz_warshall_1[2][3] = 1
+
+        self.grafo_matriz_warshall_1[3][0] = 0
+        self.grafo_matriz_warshall_1[3][1] = 0
+        self.grafo_matriz_warshall_1[3][2] = 0
+        self.grafo_matriz_warshall_1[3][3] = 0
+
+        self.grafo_matriz_warshall_2 = self.constroi_matriz(self.grafo_warshall_2)
+        self.grafo_matriz_warshall_2[0][0] = 0
+        self.grafo_matriz_warshall_2[0][1] = 1
+        self.grafo_matriz_warshall_2[0][2] = 1
+        self.grafo_matriz_warshall_2[0][3] = 1
+
+        self.grafo_matriz_warshall_2[1][0] = 0
+        self.grafo_matriz_warshall_2[1][1] = 0
+        self.grafo_matriz_warshall_2[1][2] = 0
+        self.grafo_matriz_warshall_2[1][3] = 1
+
+        self.grafo_matriz_warshall_2[2][0] = 0
+        self.grafo_matriz_warshall_2[2][1] = 1
+        self.grafo_matriz_warshall_2[2][2] = 0
+        self.grafo_matriz_warshall_2[2][3] = 1
+
+        self.grafo_matriz_warshall_2[3][0] = 0
+        self.grafo_matriz_warshall_2[3][1] = 0
+        self.grafo_matriz_warshall_2[3][2] = 0
+        self.grafo_matriz_warshall_2[3][3] = 0
+
+        self.grafo_matriz_warshall_3 = self.constroi_matriz(self.grafo_warshall_3)
+        self.grafo_matriz_warshall_3[0][0] = 0
+        self.grafo_matriz_warshall_3[0][1] = 1
+        self.grafo_matriz_warshall_3[0][2] = 1
+        self.grafo_matriz_warshall_3[0][3] = 1
+        self.grafo_matriz_warshall_3[0][4] = 1
+        self.grafo_matriz_warshall_3[0][5] = 1
+
+        self.grafo_matriz_warshall_3[1][0] = 0
+        self.grafo_matriz_warshall_3[1][1] = 0
+        self.grafo_matriz_warshall_3[1][2] = 0
+        self.grafo_matriz_warshall_3[1][3] = 1
+        self.grafo_matriz_warshall_3[1][4] = 1
+        self.grafo_matriz_warshall_3[1][5] = 1
+
+        self.grafo_matriz_warshall_3[2][0] = 0
+        self.grafo_matriz_warshall_3[2][1] = 0
+        self.grafo_matriz_warshall_3[2][2] = 0
+        self.grafo_matriz_warshall_3[2][3] = 1
+        self.grafo_matriz_warshall_3[2][4] = 1
+        self.grafo_matriz_warshall_3[2][5] = 1
+
+        self.grafo_matriz_warshall_3[3][0] = 0
+        self.grafo_matriz_warshall_3[3][1] = 0
+        self.grafo_matriz_warshall_3[3][2] = 0
+        self.grafo_matriz_warshall_3[3][3] = 0
+        self.grafo_matriz_warshall_3[3][4] = 1
+        self.grafo_matriz_warshall_3[3][5] = 1
+
+        self.grafo_matriz_warshall_3[4][0] = 0
+        self.grafo_matriz_warshall_3[4][1] = 0
+        self.grafo_matriz_warshall_3[4][2] = 0
+        self.grafo_matriz_warshall_3[4][3] = 0
+        self.grafo_matriz_warshall_3[4][4] = 0
+        self.grafo_matriz_warshall_3[4][5] = 1
+
+        self.grafo_matriz_warshall_3[5][0] = 0
+        self.grafo_matriz_warshall_3[5][1] = 0
+        self.grafo_matriz_warshall_3[5][2] = 0
+        self.grafo_matriz_warshall_3[5][3] = 0
+        self.grafo_matriz_warshall_3[5][4] = 0
+        self.grafo_matriz_warshall_3[5][5] = 0
+
+        self.grafo_matriz_warshall_4 = self.constroi_matriz(self.grafo_warshall_4)
+        self.grafo_matriz_warshall_4[0][0] = 0
+        self.grafo_matriz_warshall_4[0][1] = 1
+        self.grafo_matriz_warshall_4[0][2] = 1
+        self.grafo_matriz_warshall_4[0][3] = 1
+        self.grafo_matriz_warshall_4[0][4] = 1
+        self.grafo_matriz_warshall_4[0][5] = 1
+
+        self.grafo_matriz_warshall_4[1][0] = 0
+        self.grafo_matriz_warshall_4[1][1] = 1
+        self.grafo_matriz_warshall_4[1][2] = 1
+        self.grafo_matriz_warshall_4[1][3] = 1
+        self.grafo_matriz_warshall_4[1][4] = 1
+        self.grafo_matriz_warshall_4[1][5] = 1
+
+        self.grafo_matriz_warshall_4[2][0] = 0
+        self.grafo_matriz_warshall_4[2][1] = 1
+        self.grafo_matriz_warshall_4[2][2] = 1
+        self.grafo_matriz_warshall_4[2][3] = 1
+        self.grafo_matriz_warshall_4[2][4] = 1
+        self.grafo_matriz_warshall_4[2][5] = 1
+
+        self.grafo_matriz_warshall_4[3][0] = 0
+        self.grafo_matriz_warshall_4[3][1] = 1
+        self.grafo_matriz_warshall_4[3][2] = 1
+        self.grafo_matriz_warshall_4[3][3] = 1
+        self.grafo_matriz_warshall_4[3][4] = 1
+        self.grafo_matriz_warshall_4[3][5] = 1
+
+        self.grafo_matriz_warshall_4[4][0] = 0
+        self.grafo_matriz_warshall_4[4][1] = 0
+        self.grafo_matriz_warshall_4[4][2] = 0
+        self.grafo_matriz_warshall_4[4][3] = 0
+        self.grafo_matriz_warshall_4[4][4] = 0
+        self.grafo_matriz_warshall_4[4][5] = 1
+
+        self.grafo_matriz_warshall_4[5][0] = 0
+        self.grafo_matriz_warshall_4[5][1] = 0
+        self.grafo_matriz_warshall_4[5][2] = 0
+        self.grafo_matriz_warshall_4[5][3] = 0
+        self.grafo_matriz_warshall_4[5][4] = 0
+        self.grafo_matriz_warshall_4[5][5] = 0
+
         # Grafos desconexos
         self.g_dijkstra = MeuGrafo()
         self.g_dijkstra.adiciona_vertice("A")
@@ -352,6 +535,11 @@ class TestGrafo(unittest.TestCase):
     def test_warshall(self):
         self.assertEqual(self.g_p.warshall(), self.g_p_m)
         self.assertEqual(self.g_e.warshall(), self.g_e_m)
+
+        self.assertEqual(self.grafo_warshall_1.warshall(), self.grafo_matriz_warshall_1)
+        self.assertEqual(self.grafo_warshall_2.warshall(), self.grafo_matriz_warshall_2)
+        self.assertEqual(self.grafo_warshall_3.warshall(), self.grafo_matriz_warshall_3)
+        self.assertEqual(self.grafo_warshall_4.warshall(), self.grafo_matriz_warshall_4)
 
     def test_dijkstra(self):
         pass

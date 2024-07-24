@@ -1,6 +1,7 @@
 from bibgrafo.grafo_matriz_adj_dir import *
 from bibgrafo.grafo_exceptions import *
 
+
 class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
 
     def vertices_nao_adjacentes(self):
@@ -17,7 +18,6 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         :return: Um valor booleano que indica se existe algum laço.
         '''
         pass
-
 
     def grau(self, V=''):
         '''
@@ -56,4 +56,27 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         Provê a matriz de alcançabilidade de Warshall do grafo
         :return: Uma lista de listas que representa a matriz de alcançabilidade de Warshall associada ao grafo
         '''
-        pass
+        m1_simplificada = []
+
+        for linha in range(len(self.vertices)):
+            linha_simplificada = []
+            for coluna in range(len(self.vertices)):
+                if len(self.arestas[linha][coluna]) >= 1:
+                    linha_simplificada.append(1)
+                else:
+                    linha_simplificada.append(0)
+            m1_simplificada.append(linha_simplificada)
+
+        for linha in range(len(self.vertices)):  # i
+            for coluna in range(len(self.vertices)):  # j
+                # testando se verticalmente, tem um 1 naquele indice
+                if m1_simplificada[coluna][linha] == 1:
+                    for colunas_do_indice_que_tem_1 in range(len(self.vertices)):  # k
+                        # compara linha que começa com 1 com a linha que tem o indice da coluna da vez
+                        if m1_simplificada[coluna][colunas_do_indice_que_tem_1] >= m1_simplificada[linha]\
+                                [colunas_do_indice_que_tem_1]:
+                            pass
+                        else:
+                            m1_simplificada[coluna][colunas_do_indice_que_tem_1] = m1_simplificada[linha]\
+                                [colunas_do_indice_que_tem_1]
+        return m1_simplificada
