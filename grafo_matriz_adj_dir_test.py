@@ -212,6 +212,50 @@ class TestGrafo(unittest.TestCase):
 
         # grafos warshall
 
+        self.grafo_warshall_0 = MeuGrafo()
+        self.grafo_warshall_0.adiciona_vertice("1")
+        self.grafo_warshall_0.adiciona_vertice("2")
+        self.grafo_warshall_0.adiciona_vertice("3")
+        self.grafo_warshall_0.adiciona_vertice("4")
+        self.grafo_warshall_0.adiciona_vertice("5")
+        self.grafo_warshall_0.adiciona_aresta('a1', '1', '2')
+        self.grafo_warshall_0.adiciona_aresta('a2', '2', '1')
+        self.grafo_warshall_0.adiciona_aresta('a3', '2', '3')
+        self.grafo_warshall_0.adiciona_aresta('a4', '2', '4')
+        self.grafo_warshall_0.adiciona_aresta('a5', '4', '5')
+        self.grafo_warshall_0.adiciona_aresta('a6', '5', '2')
+
+        self.grafo_matriz_warshall_0 = self.constroi_matriz(self.grafo_warshall_0)
+        self.grafo_matriz_warshall_0[0][0] = 1
+        self.grafo_matriz_warshall_0[0][1] = 1
+        self.grafo_matriz_warshall_0[0][2] = 1
+        self.grafo_matriz_warshall_0[0][3] = 1
+        self.grafo_matriz_warshall_0[0][4] = 1
+
+        self.grafo_matriz_warshall_0[1][0] = 1
+        self.grafo_matriz_warshall_0[1][1] = 1
+        self.grafo_matriz_warshall_0[1][2] = 1
+        self.grafo_matriz_warshall_0[1][3] = 1
+        self.grafo_matriz_warshall_0[1][4] = 1
+
+        self.grafo_matriz_warshall_0[2][0] = 0
+        self.grafo_matriz_warshall_0[2][1] = 0
+        self.grafo_matriz_warshall_0[2][2] = 0
+        self.grafo_matriz_warshall_0[2][3] = 0
+        self.grafo_matriz_warshall_0[2][4] = 0
+
+        self.grafo_matriz_warshall_0[3][0] = 1
+        self.grafo_matriz_warshall_0[3][1] = 1
+        self.grafo_matriz_warshall_0[3][2] = 1
+        self.grafo_matriz_warshall_0[3][3] = 1
+        self.grafo_matriz_warshall_0[3][4] = 1
+
+        self.grafo_matriz_warshall_0[4][0] = 1
+        self.grafo_matriz_warshall_0[4][1] = 1
+        self.grafo_matriz_warshall_0[4][2] = 1
+        self.grafo_matriz_warshall_0[4][3] = 1
+        self.grafo_matriz_warshall_0[4][4] = 1
+
         self.grafo_warshall_1 = MeuGrafo()
         self.grafo_warshall_1.adiciona_vertice("A")
         self.grafo_warshall_1.adiciona_vertice("B")
@@ -536,6 +580,7 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(self.g_p.warshall(), self.g_p_m)
         self.assertEqual(self.g_e.warshall(), self.g_e_m)
 
+        self.assertEqual(self.grafo_warshall_0.warshall(), self.grafo_matriz_warshall_0)
         self.assertEqual(self.grafo_warshall_1.warshall(), self.grafo_matriz_warshall_1)
         self.assertEqual(self.grafo_warshall_2.warshall(), self.grafo_matriz_warshall_2)
         self.assertEqual(self.grafo_warshall_3.warshall(), self.grafo_matriz_warshall_3)
