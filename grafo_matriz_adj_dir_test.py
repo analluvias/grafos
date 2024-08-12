@@ -448,14 +448,101 @@ class TestGrafo(unittest.TestCase):
         self.g_dijkstra.adiciona_aresta('3', 'B', 'D', 1)
         self.g_dijkstra.adiciona_aresta('2', 'C', 'D', 2)
 
+        # teste dijkstra
+        self.grafo_1_teste_dijkstra = MeuGrafo()
+        self.grafo_1_teste_dijkstra.adiciona_vertice('A')
+        self.grafo_1_teste_dijkstra.adiciona_vertice('B')
+        self.grafo_1_teste_dijkstra.adiciona_vertice('C')
+        self.grafo_1_teste_dijkstra.adiciona_vertice('D')
+        self.grafo_1_teste_dijkstra.adiciona_vertice('E')
+        self.grafo_1_teste_dijkstra.adiciona_vertice('F')
+        self.grafo_1_teste_dijkstra.adiciona_aresta('a1', 'A', 'B', 2)
+        self.grafo_1_teste_dijkstra.adiciona_aresta('a2', 'A', 'C', 1)
+        self.grafo_1_teste_dijkstra.adiciona_aresta('a3', 'C', 'D', 3)
+        self.grafo_1_teste_dijkstra.adiciona_aresta('a4', 'B', 'D', 1)
+        self.grafo_1_teste_dijkstra.adiciona_aresta('a5', 'C', 'F', 15)
+        self.grafo_1_teste_dijkstra.adiciona_aresta('a6', 'D', 'E', 2)
+        self.grafo_1_teste_dijkstra.adiciona_aresta('a7', 'E', 'F', 3)
+
+        self.grafo_2_teste_dijkstra = MeuGrafo()
+        self.grafo_2_teste_dijkstra.adiciona_vertice("A")
+        self.grafo_2_teste_dijkstra.adiciona_vertice("B")
+        self.grafo_2_teste_dijkstra.adiciona_vertice("C")
+        self.grafo_2_teste_dijkstra.adiciona_vertice("D")
+        self.grafo_2_teste_dijkstra.adiciona_aresta('a1', 'A', 'B', 1)
+        self.grafo_2_teste_dijkstra.adiciona_aresta('a2', 'A', 'C', 3)
+        self.grafo_2_teste_dijkstra.adiciona_aresta('a3', 'B', 'D', 1)
+        self.grafo_2_teste_dijkstra.adiciona_aresta('a2', 'C', 'D', 2)
+
+        self.grafo_3_teste_dijkstra = MeuGrafo()
+        self.grafo_3_teste_dijkstra.adiciona_vertice('A')
+        self.grafo_3_teste_dijkstra.adiciona_vertice('B')
+        self.grafo_3_teste_dijkstra.adiciona_vertice('C')
+        self.grafo_3_teste_dijkstra.adiciona_vertice('D')
+        self.grafo_3_teste_dijkstra.adiciona_vertice('E')
+        self.grafo_3_teste_dijkstra.adiciona_vertice('F')
+        self.grafo_3_teste_dijkstra.adiciona_aresta('a1', 'A', 'B', 4)
+        self.grafo_3_teste_dijkstra.adiciona_aresta('a3', 'A', 'C', 3)
+        self.grafo_3_teste_dijkstra.adiciona_aresta('a2', 'B', 'C', 2)
+        self.grafo_3_teste_dijkstra.adiciona_aresta('a4', 'C', 'D', 4)
+        self.grafo_3_teste_dijkstra.adiciona_aresta('a5', 'D', 'E', 1)
+        self.grafo_3_teste_dijkstra.adiciona_aresta('a6', 'B', 'E', 9)
+        self.grafo_3_teste_dijkstra.adiciona_aresta('a7', 'E', 'F', 2)
+
+        self.grafo_4_teste_dijkstra = MeuGrafo()
+        self.grafo_4_teste_dijkstra.adiciona_vertice('A')
+        self.grafo_4_teste_dijkstra.adiciona_vertice('B')
+        self.grafo_4_teste_dijkstra.adiciona_vertice('C')
+        self.grafo_4_teste_dijkstra.adiciona_vertice('D')
+        self.grafo_4_teste_dijkstra.adiciona_aresta('a1', 'A', 'B', 7)
+        self.grafo_4_teste_dijkstra.adiciona_aresta('a2', 'A', 'C', 2)
+        self.grafo_4_teste_dijkstra.adiciona_aresta('a3', 'B', 'D', 1)
+        self.grafo_4_teste_dijkstra.adiciona_aresta('a4', 'C', 'D', 6)
+        self.grafo_4_teste_dijkstra.adiciona_aresta('a5', 'A', 'D', 9)
+        self.grafo_4_teste_dijkstra.adiciona_aresta('a6', 'C', 'B', 3)
+
+        self.grafo_1_teste_bellman_ford = MeuGrafo()
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('A')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('B')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('C')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('D')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('E')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('F')
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a1', 'A', 'B', 5)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a2', 'A', 'C', -2)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a4', 'B', 'D', 1)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a3', 'C', 'B', 2)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a3', 'C', 'E', 3)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a5', 'D', 'C', 2)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a6', 'D', 'E', 7)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a6', 'D', 'F', 3)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a7', 'E', 'F', 10)
+
+
+
+        self.grafo_1_teste_bellman_ford = MeuGrafo()
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('A')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('B')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('C')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('D')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('E')
+        self.grafo_1_teste_bellman_ford.adiciona_vertice('F')
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a1', 'A', 'B', 9)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a2', 'A', 'C', 7)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a4', 'B', 'E', 2)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a3', 'C', 'D', 2)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a3', 'D', 'E', 2)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a5', 'E', 'F', -2)
+        self.grafo_1_teste_bellman_ford.adiciona_aresta('a6', 'F', 'B', 2)
+
     def constroi_matriz(self, g: MeuGrafo):
-        ordem = len(g._vertices)
-        m = list()
-        for i in range(ordem):
-            m.append(list())
-            for j in range(ordem):
-                m[i].append(0)
-        return m
+            ordem = len(g._vertices)
+            m = list()
+            for i in range(ordem):
+                m.append(list())
+                for j in range(ordem):
+                    m[i].append(0)
+            return m
 
     def test_adiciona_aresta(self):
         self.assertTrue(self.g_p.adiciona_aresta('a10', 'J', 'C'))
@@ -587,4 +674,19 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(self.grafo_warshall_4.warshall(), self.grafo_matriz_warshall_4)
 
     def test_dijkstra(self):
-        pass
+        self.assertEqual(self.grafo_1_teste_dijkstra
+                         .dijkstra('A', 'F'), ['F', 'E', 'D', 'B', 'A'])
+        self.assertEqual(self.grafo_1_teste_dijkstra
+                         .dijkstra('A', 'E'), ['E', 'D', 'B', 'A'])
+        self.assertEqual(self.grafo_2_teste_dijkstra
+                         .dijkstra('A', 'D'), ['D', 'B', 'A'])
+        self.assertEqual(self.grafo_3_teste_dijkstra
+                         .dijkstra('B', 'F'), ['F', 'E', 'D', 'C', 'B'])
+        self.assertEqual(self.grafo_3_teste_dijkstra
+                         .dijkstra('A', 'F'), ['F', 'E', 'D', 'C', 'A'])
+        self.assertEqual(self.grafo_4_teste_dijkstra
+                         .dijkstra('A', 'D'), ['D', 'B', 'C', 'A'])
+
+    def test_bellman_ford(self):
+        self.assertEqual(self.grafo_1_teste_bellman_ford
+                         .bellman_ford('A'), [])

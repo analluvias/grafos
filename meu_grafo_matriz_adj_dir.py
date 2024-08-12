@@ -1,5 +1,6 @@
 from bibgrafo.grafo_matriz_adj_dir import *
 from bibgrafo.grafo_exceptions import *
+from math import inf
 
 
 class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
@@ -42,7 +43,21 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         :return: Uma lista os rótulos das arestas que incidem sobre o vértice
         :raises: VerticeInvalidoException se o vértice não existe no grafo
         '''
-        pass
+
+        if not self.existe_rotulo_vertice(V):
+            raise VerticeInvalidoError
+
+        v = self.get_vertice(V)
+        indiceVertice = self.indice_do_vertice(v)
+        arestas = list()
+
+        for j in range(len(self.arestas)):
+            for aresta in self.arestas[indiceVertice][j]:
+                arestas.append(self.arestas[indiceVertice][j][aresta])
+        for j in range(len(self.arestas)):
+            for aresta in self.arestas[j][indiceVertice]:
+                arestas.append(self.arestas[j][indiceVertice][aresta])
+        return arestas
 
     def eh_completo(self):
         '''
@@ -73,10 +88,201 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
                 if m1_simplificada[coluna][linha] == 1:
                     for colunas_do_indice_que_tem_1 in range(len(self.vertices)):  # k
                         # compara linha que começa com 1 com a linha que tem o indice da coluna da vez
-                        if m1_simplificada[coluna][colunas_do_indice_que_tem_1] >= m1_simplificada[linha]\
+                        if m1_simplificada[coluna][colunas_do_indice_que_tem_1] >= m1_simplificada[linha] \
                                 [colunas_do_indice_que_tem_1]:
                             pass
                         else:
-                            m1_simplificada[coluna][colunas_do_indice_que_tem_1] = m1_simplificada[linha]\
+                            m1_simplificada[coluna][colunas_do_indice_que_tem_1] = m1_simplificada[linha] \
                                 [colunas_do_indice_que_tem_1]
         return m1_simplificada
+
+    def dijkstra(self, inicial, final):
+
+        # armazena a distancia estimada do vertice inicial até o vertice v
+        beta = {}
+
+        # indica se o vertice já foi visitado - 0 nao 1 sim
+        phi = {}
+
+        # armazena o predecessor de v até o momento
+        pi = {}
+
+        # vertice inicial
+        w = inicial
+
+        # percorrendo todos os vertices e configurando
+        # os valores iniciais padrões
+        for n in self.vertices:
+            v = str(n)
+            beta[v] = inf
+            phi[v] = 0
+            pi[v] = 0
+
+        beta[inicial] = 0
+        phi[inicial] = 1
+        w = inicial
+
+        # laço infinito
+        while True:
+            # verificando qual aresta incide sobre o vertice inicial atual
+            sobre = self.arestas_sobre_vertice(w)
+            # so saimos do laco quando chegarmos a w
+            if w == final:
+                break
+
+            # para cada vertice que incide
+            for x in sobre:
+                # se o inicial atual for igual ao v1 da aresta, pegar o v2
+                if w == x.v1.rotulo:
+                    contrario = x.v2.rotulo
+                # se o inicial for igual ao v2, pegar o v1
+                else:
+                    contrario = x.v1.rotulo
+                # se a distancia do outro vertic for maior que a distancia do
+                # inicial atual mais o peso desse vertice
+                # e nao tivermos passado por essa aresta
+                if beta[contrario] > beta[w] + x.peso and phi[contrario] == 0:
+                    # entao esse vertice recebe a distancia do inicial mais o peso
+                    beta[contrario] = beta[w] + x.peso
+                    # e seu predecessor é o inicial atual
+                    pi[contrario] = w
+
+            # o menor caminho vai ser igual a infinito
+            menor = inf
+
+            # rodando o dicionário beta que contem a distancia entre os adj ao inicial atual
+            for i in beta:
+                # se aquele caminho for menor que o menor e nao
+                # tivermos passado por ele
+                if beta[i] < menor and phi[i] == 0:
+                    # encontramos um caminho mais curto para esse vértice do
+                    # que os encontrados anteriormente.
+                    menor = beta[i]
+            # w inicial vai ser obtido do dicionario com os valores de beta
+            # receberá o nome de beta, mas buscaremos pelo indice do menor
+            w = list(beta.keys())[list(beta.values()).index(menor)]
+            # vamos marcar o phi do novo inicial com 1
+            phi[w] = 1
+
+        # r recebe o vertice final
+        r = final
+        caminho = []
+        while True:
+            caminho.append(r)
+            # quebramos ao chegar no inicial
+            if r == inicial:
+                return caminho
+            # predecessor do final atual
+            r = pi[r]
+
+    def recalcula_distancias(self, contrario_old, beta, pai_anterior, conta_recursoes):
+
+        conta_recursoes += 1
+
+        sobre = self.arestas_sobre_vertice(contrario_old)
+
+        if len(sobre) == 0 or beta[contrario_old] == inf or conta_recursoes == len(self.vertices) - 1:
+            return
+
+        # para cada vertice que incide
+        for x in sobre:
+            # se o inicial atual for igual ao v1 da aresta, pegar o v2
+            if contrario_old == x.v1.rotulo:
+                contrario_new = x.v2.rotulo
+            # se o inicial for igual ao v2, pegar o v1
+            else:
+                contrario_new = x.v1.rotulo
+
+            if beta[contrario_new] != inf and contrario_new != pai_anterior:
+                beta[contrario_new] = beta[contrario_old] + x.peso
+                self.recalcula_distancias(contrario_new, beta, contrario_old, conta_recursoes)
+            else:
+                return
+
+    @staticmethod
+    def obtem_caminho_vertice(pi, vertice_calculado, inicial):
+
+        caminho = []
+        while True:
+            caminho.append(str(vertice_calculado))
+            # quebramos ao chegar no inicial
+            if str(vertice_calculado) == inicial:
+                return caminho
+            # predecessor do final atual
+            vertice_calculado = pi[str(vertice_calculado)]
+
+    def bellman_ford(self, inicial):
+        # armazena os filhos de todos os vertices
+        filhos = {}
+
+        # armazena a distancia estimada do vertice inicial até o vertice v
+        beta_atualizado = {}
+
+        # armazena o estado dos betas da iteração anterior
+        beta_anterior = {}
+
+        # armazena o predecessor de v até o momento
+        pi = {}
+
+        # percorrendo todos os vertices e configurando
+        # os valores iniciais padrões
+        for n in self.vertices:
+            v = str(n)
+            beta_atualizado[v] = inf
+            beta_anterior[v] = inf
+            pi[v] = 0
+            filhos[v] = self.arestas_sobre_vertice(v)
+
+        # mudando distancia do beta inicial
+        beta_atualizado[inicial] = 0
+        # vertices que eu verificarei os filhos nessa iteração
+        # começo pelo inicial
+        proximo_vertice_a_verificar_filhos = [inicial]
+
+        conta_iteracoes = 0
+        # percorrer n-1 vezes
+        while True:
+
+            # print(len(self.vertices) - 1)
+            aux = []
+
+            for proximo in proximo_vertice_a_verificar_filhos:
+
+                sobre = self.arestas_sobre_vertice(proximo)
+
+                # para cada vertice que incide
+                for x in sobre:
+                    # se o inicial atual for igual ao v1 da aresta, pegar o v2
+                    if proximo == x.v1.rotulo:
+                        contrario = x.v2.rotulo
+                    # se o inicial for igual ao v2, pegar o v1
+                    else:
+                        contrario = x.v1.rotulo
+                    # se a distancia atual do vertice filho for maior que a distancia do
+                    # inicial atual mais o peso do vertice que liga os dois
+                    if beta_atualizado[contrario] > beta_atualizado[proximo] + x.peso:
+                        # entao o vertice filho recebe a distancia do inicial atual mais o peso
+                        beta_atualizado[contrario] = beta_atualizado[proximo] + x.peso
+                        # e seu predecessor é o inicial atual
+                        pi[contrario] = proximo
+
+                        self.recalcula_distancias(contrario, beta_atualizado, proximo, conta_recursoes=0)
+
+                    aux.append(contrario)
+
+            conta_iteracoes += 1
+
+            if conta_iteracoes == len(self.vertices) - 1:
+                break
+            elif beta_anterior == beta_atualizado:
+                break
+            else:
+                beta_anterior = beta_atualizado
+
+            proximo_vertice_a_verificar_filhos = aux
+
+        caminhos = {}
+        for vertice in self.vertices:
+            caminhos[str(vertice)] = self.obtem_caminho_vertice(pi, vertice, inicial)
+
+        return caminhos
