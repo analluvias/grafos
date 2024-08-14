@@ -175,7 +175,7 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
             # predecessor do final atual
             r = pi[r]
 
-    def recalcula_distancias(self, contrario_old, beta, pai_anterior, conta_recursoes):
+    def recalcula_distancias(self, contrario_old, beta, pai_anterior, passei_por_aqui, conta_recursoes):
 
         conta_recursoes += 1
 
@@ -187,15 +187,16 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         # para cada vertice que incide
         for x in sobre:
             # se o inicial atual for igual ao v1 da aresta, pegar o v2
-            if contrario_old == x.v1.rotulo:
-                contrario_new = x.v2.rotulo
+            # if contrario_old == x.v1.rotulo:
+            contrario_new = x.v2.rotulo
             # se o inicial for igual ao v2, pegar o v1
-            else:
-                contrario_new = x.v1.rotulo
+            # else:
+            #     contrario_new = x.v1.rotulo
 
-            if beta[contrario_new] != inf and contrario_new != pai_anterior:
+            if beta[contrario_new] != inf and contrario_new != pai_anterior and beta[contrario_new] > \
+                    beta[contrario_old] + x.peso and beta[contrario_new] in passei_por_aqui:
                 beta[contrario_new] = beta[contrario_old] + x.peso
-                self.recalcula_distancias(contrario_new, beta, contrario_old, conta_recursoes)
+                self.recalcula_distancias(contrario_new, beta, contrario_old, passei_por_aqui, conta_recursoes)
             else:
                 return
 
@@ -224,6 +225,9 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         # armazena o predecessor de v até o momento
         pi = {}
 
+        # armazeno os vertices já passados
+        passei_por_aqui = []
+
         # percorrendo todos os vertices e configurando
         # os valores iniciais padrões
         for n in self.vertices:
@@ -240,6 +244,9 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         proximo_vertice_a_verificar_filhos = [inicial]
 
         conta_iteracoes = 0
+
+        vertice_anterior = inicial
+
         # percorrer n-1 vezes
         while True:
 
@@ -247,42 +254,82 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
             aux = []
 
             for proximo in proximo_vertice_a_verificar_filhos:
-
+                # aux = []
+                print("proximo: ", proximo)
                 sobre = self.arestas_sobre_vertice(proximo)
-
                 # para cada vertice que incide
                 for x in sobre:
+
+                    print("vertices de sobre: ", str(x))
+
                     # se o inicial atual for igual ao v1 da aresta, pegar o v2
                     if proximo == x.v1.rotulo:
                         contrario = x.v2.rotulo
+                        contrario_eh_pai = False
+                        contrario_eh_filho = True
                     # se o inicial for igual ao v2, pegar o v1
                     else:
                         contrario = x.v1.rotulo
-                    # se a distancia atual do vertice filho for maior que a distancia do
-                    # inicial atual mais o peso do vertice que liga os dois
+                        contrario_eh_pai = True
+                        contrario_eh_filho = False
+
                     if beta_atualizado[contrario] > beta_atualizado[proximo] + x.peso:
-                        # entao o vertice filho recebe a distancia do inicial atual mais o peso
-                        beta_atualizado[contrario] = beta_atualizado[proximo] + x.peso
-                        # e seu predecessor é o inicial atual
-                        pi[contrario] = proximo
+                        if contrario_eh_filho:
+                            passei_por_aqui.append(contrario)
+                            print("beta contrario_eh_filho:", beta_atualizado)
+                            print("passei por aqui: ", passei_por_aqui)
+                            print("\n contrario contrario_eh_filho: " + contrario + " ", beta_atualizado[proximo] + x.peso, " ", proximo)
+                            # entao o vertice filho recebe a distancia do inicial atual mais o peso
+                            beta_atualizado[contrario] = beta_atualizado[proximo] + x.peso
+                            # e seu predecessor é o inicial atual
+                            pi[contrario] = proximo
 
-                        self.recalcula_distancias(contrario, beta_atualizado, proximo, conta_recursoes=0)
+                            self.recalcula_distancias(contrario, beta_atualizado, proximo, passei_por_aqui, conta_recursoes=0)
 
-                    aux.append(contrario)
+                        if contrario_eh_pai and beta_atualizado[contrario] != inf:
+                            passei_por_aqui.append(contrario)
+                            print("beta contrario_eh_pai:", beta_atualizado)
+                            print("passei por aqui: ", passei_por_aqui)
+                            print("\n contrario contrario_eh_pai: " + contrario + " ", beta_atualizado[proximo] + x.peso, " ", proximo)
+                            # entao o vertice filho recebe a distancia do inicial atual mais o peso
+                            beta_atualizado[proximo] = beta_atualizado[contrario] + x.peso
+                            # e seu predecessor é o inicial atual
+                            pi[proximo] = contrario
+
+                            self.recalcula_distancias(proximo, beta_atualizado, contrario, passei_por_aqui,
+                                                      conta_recursoes=0)
+
+                        if contrario != vertice_anterior:
+                            aux.append(contrario)
+
+                if conta_iteracoes != 0:
+                    vertice_anterior = proximo
+
+                proximo_vertice_a_verificar_filhos = list(set(aux))
+                print(proximo_vertice_a_verificar_filhos)
 
             conta_iteracoes += 1
 
             if conta_iteracoes == len(self.vertices) - 1:
+                print('numero de vezes')
                 break
             elif beta_anterior == beta_atualizado:
+                print('beta anterior = beta atualizado')
+                print(beta_anterior)
+                print(beta_atualizado)
                 break
             else:
+                pass
                 beta_anterior = beta_atualizado
 
-            proximo_vertice_a_verificar_filhos = aux
+            # proximo_vertice_a_verificar_filhos = aux
+            # print(proximo_vertice_a_verificar_filhos)
+
+        print("\n", pi)
+        print(beta_atualizado)
 
         caminhos = {}
-        for vertice in self.vertices:
-            caminhos[str(vertice)] = self.obtem_caminho_vertice(pi, vertice, inicial)
+        # for vertice in self.vertices:
+        #     caminhos[str(vertice)] = self.obtem_caminho_vertice(pi, vertice, inicial)
 
         return caminhos
